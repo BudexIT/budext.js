@@ -14,9 +14,9 @@ div {
 	border-radius: 20px;
 
 	p {
-		color: white;
 		content: "Hello, World!";
-	
+
+		color: white;
 		margin: 0;
 	}
 }
