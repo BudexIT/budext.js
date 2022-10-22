@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 # project's name and version
-set(project_name hcssml)
+set(project_name hssml)
 project(${project_name} VERSION 1.0.0)
 
 # add ./include/ as an include directory
