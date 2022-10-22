@@ -16,5 +16,11 @@ file(GLOB_RECURSE srcs
 	"src/*.c"
 )
 
+# prepare innards
+innard_prepare(
+	${CMAKE_CURRENT_SOURCE_DIR}/innards_src/index.html
+	${CMAKE_CURRENT_SOURCE_DIR}/innards_build/index.html.h
+)
+
 # create an executable app out of the sources
 add_executable(${project_name} ${srcs})
