@@ -15,19 +15,16 @@ int main(int argc, char **argv) {
 	}
 
 	auto file = hssml::file::stringRead(filename);
-
 	if(file.error().code()) {
 		std::cout << file.error().string() << std::endl;
 		return 1;
 	}
-
-	std::string templateHTML = g_innard_index_html;
-	
 	std::string input = file.unwrap();
 
-	std::string output;
+	std::string style = "";
+	// std::string script = "";
 
-	output = hssml::str::replace(templateHTML, "{body}", input);
+	std::string output = hssml::str::replace(templateHTML, "{body}", input);
 
 	auto res = hssml::file::stringWrite(filename + ".html", output);
 	if(res.error().code()) {

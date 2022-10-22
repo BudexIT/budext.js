@@ -35,7 +35,7 @@ for line in input_file_lines:
 			final_line += "\\\\"
 		else:
 			final_line += char
-	final_line += "\\n\\\n"
+	final_line += "\\n"
 	output_file += final_line
 
 output_file += "\";"

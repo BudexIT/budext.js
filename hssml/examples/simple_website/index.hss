@@ -1,13 +1,13 @@
-title {
-	content: "OwO";
-}
-
-style {
-	#main {
-		background: #321257;
+head {
+	title {
+		content: "OwO";
+	}
+	style {
+		#main {
+			background: #321257;
+		}
 	}
 }
-
 body {
 	background: black;
 
