@@ -4,6 +4,9 @@
 #include <iostream>
 
 #include <hssml/file.hpp>
+#include <hssml/str.hpp>
+
+#include <innards/index.html.h>
 
 int main(int argc, char **argv) {
 	std::string filename = "./index.hss";
@@ -18,8 +21,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	std::string templateHTML = 
-	#include <innards/index.html.h>
+	std::string templateHTML = g_innard_index_html;
 	
 	std::string input = file.unwrap();
 
