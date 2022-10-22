@@ -27,7 +27,9 @@ int main(int argc, char **argv) {
 
 	std::string output;
 
-	auto res = hssml::file::stringWrite(filename + ".html", templateHTML);
+	output = hssml::str::replace(templateHTML, "{body}", input);
+
+	auto res = hssml::file::stringWrite(filename + ".html", output);
 	if(res.error().code()) {
 		std::cout << res.error().string() << std::endl;
 		return 1;
