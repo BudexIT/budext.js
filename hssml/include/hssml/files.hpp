@@ -27,6 +27,7 @@ ResString stringRead(const std::string& filename) {
 
 	return ResString(std::move(text));
 }
+
 ResNull stringWrite(const std::string& filename, const std::string& content) {
 	FILE *file = fopen(filename.c_str(), "w");
 	if(file == nullptr) {

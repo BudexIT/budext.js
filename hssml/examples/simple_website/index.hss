@@ -1,9 +1,7 @@
 body {
-	title: "Hello, HCSSML!";
 	background: black;
 
-
-	div {
+	div#main {
 		background: #321257;
 	
 		position: absolute;
