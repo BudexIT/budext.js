@@ -12,15 +12,20 @@ int main(int argc, char **argv) {
 	}
 
 	auto file = hssml::file::stringRead(filename);
+
 	if(file.error().code()) {
 		std::cout << file.error().string() << std::endl;
 		return 1;
 	}
 
-	std::string HTML = 
-	#include <index.html.h> new-line
+	std::string templateHTML = 
+	#include <innards/index.html.h>
+	
+	std::string input = file.unwrap();
 
-	auto res = hssml::file::stringWrite(filename + ".html", HTML);
+	std::string output;
+
+	auto res = hssml::file::stringWrite(filename + ".html", templateHTML);
 	if(res.error().code()) {
 		std::cout << res.error().string() << std::endl;
 		return 1;
