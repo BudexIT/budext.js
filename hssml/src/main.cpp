@@ -17,13 +17,8 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	std::cout << input << std::endl;
+	std::string HTML = "<>";
 
-	auto res = hssml::file::stringWrite("./public/index.html", input);
-	if(res.error().code()) {
-		std::cout << file.error().string() << std::endl;
-		return 1;
-	}
 
 	return 0;
 }
