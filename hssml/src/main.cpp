@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include <hssml/files.hpp>
+#include <hssml/file.hpp>
 
 int main(int argc, char **argv) {
 	std::string filename = "./index.hss";
