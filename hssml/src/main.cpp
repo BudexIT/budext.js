@@ -17,8 +17,14 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	std::string HTML = "<>";
+	std::string HTML = 
+	#include <index.html.h> new-line
 
+	auto res = hssml::file::stringWrite(filename + ".html", HTML);
+	if(res.error().code()) {
+		std::cout << res.error().string() << std::endl;
+		return 1;
+	}
 
 	return 0;
 }

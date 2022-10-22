@@ -20,7 +20,23 @@ def loadFile(name):
 		data = fp.read()
 	return data
 
-str = loadFile(sys.argv[1]);
-makeFile(sys.argv[2], str)
+input_file = loadFile(sys.argv[1]);
+
+output_file = "\""
+
+input_file_lines = input_file.split('\n');
+for line in input_file_lines:
+	final_line = ""
+	for char in line:
+		if char != "\"":
+			final_line += char
+		else:
+			final_line += "\\\""
+	final_line += "\\n\\\n"
+	output_file += final_line
+
+output_file += "\";"
+
+makeFile(sys.argv[2], output_file)
 
 print("-- [budext.js] [Innard Preparator] Operation Successful")

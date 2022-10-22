@@ -5,8 +5,9 @@ cmake_minimum_required(VERSION 3.0.0)
 set(project_name hssml)
 project(${project_name} VERSION 1.0.0)
 
-# add ./include/ as an include directory
+# add ./include/ and ./innards_build/ as an include directory
 include_directories(include)
+include_directories(innards_build)
 
 # recursively search the include and src directories
 file(GLOB_RECURSE srcs
