@@ -1,9 +1,8 @@
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "res.hpp"
+
+#include <string>
 
 namespace hssml {
 namespace file {

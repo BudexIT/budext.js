@@ -1,5 +1,8 @@
 #include <hssml/file.hpp>
 
+#include <stdio.h>
+#include <stdlib.h>
+
 namespace hssml {
 namespace file {
 

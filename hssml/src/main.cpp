@@ -13,6 +13,10 @@ int main(int argc, char **argv) {
 	if(argc > 1) {
 		filename = argv[1];
 	}
+	std::string filename_out = "./index.html";
+	if(argc > 2) {
+		filename_out = argv[2];
+	}
 
 	auto file = hssml::file::stringRead(filename);
 	if(file.error().code()) {
@@ -24,9 +28,9 @@ int main(int argc, char **argv) {
 	std::string style = "";
 	// std::string script = "";
 
-	std::string output = hssml::str::replace(templateHTML, "{body}", input);
+	std::string output = hssml::str::replace(g_innard_index_html, "{body}", input);
 
-	auto res = hssml::file::stringWrite(filename + ".html", output);
+	auto res = hssml::file::stringWrite(filename_out, output);
 	if(res.error().code()) {
 		std::cout << res.error().string() << std::endl;
 		return 1;
