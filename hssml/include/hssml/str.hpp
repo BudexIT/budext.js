@@ -8,6 +8,7 @@ namespace hssml {
 namespace str {
 
 std::string replace(std::string input, std::string_view to_replace, std::string_view replace_with);
+std::vector<std::string> split(const std::string& input, std::string_view where);
 
 }
 }

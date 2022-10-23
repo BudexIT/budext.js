@@ -30,6 +30,13 @@ int main(int argc, char **argv) {
 
 	std::string output = hssml::str::replace(g_innard_index_html, "{body}", input);
 
+	std::string aaaaaaa = "abc/xdefgh/ijkl/mnoper/st";
+
+	auto x = hssml::str::split(aaaaaaa, "/");
+	for(auto& v : x) {
+		std::cout << "-- ENTRY - " << v << std::endl;
+	}
+
 	auto res = hssml::file::stringWrite(filename_out, output);
 	if(res.error().code()) {
 		std::cout << res.error().string() << std::endl;
