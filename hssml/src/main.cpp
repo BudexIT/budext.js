@@ -6,7 +6,7 @@
 #include <hssml/file.hpp>
 #include <hssml/str.hpp>
 
-#include <innards/index.html.h>
+#include <hssml/innards/index.html.h>
 
 int main(int argc, char **argv) {
 	std::string filename = "./index.hss";

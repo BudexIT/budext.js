@@ -10,9 +10,9 @@ include_directories(include)
 
 # prepare innards
 innard_prepare(
-	${CMAKE_CURRENT_SOURCE_DIR}/innards/index.html
-	${CMAKE_CURRENT_SOURCE_DIR}/include/innards/index.html.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/innards/index.html.c
+	"innards/index.html"
+	"include/hssml/innards/index.html.h"
+	"src/hssml/innards/index.html.c"
 )
 
 # recursively search the include and src directories
