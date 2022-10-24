@@ -19,6 +19,8 @@ innard_prepare(
 file(GLOB_RECURSE srcs
 	"include/*.hpp"
 	"include/*.h"
+	"src/*.hpp"
+	"src/*.h"
 	"src/*.cpp"
 	"src/*.c"
 )
