@@ -1,21 +1,18 @@
 head {
-	title {
-		content: "OwO";
-	}
 	style {
 		#main {
 			background: #321257;
 		}
-		p {
-			color: 	white;
-			background-color: #321257;
-		}
 	}
 }
 body {
-	background: black;
+	background: #111;
 
-	div#main.a.bsdasdds.csd {
+	title {
+		content: "Simple Website";
+	}
+	
+	div#main {
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -25,9 +22,11 @@ body {
 		border: 2px solid white;
 		border-radius: 20px;
 	
-		p.lowp#precds.low.fx {
+		p {
 			content: "Hello, World!";
-	
+			
+			font-size: xx-large;
+			font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 			color: white;
 			margin: 0;
 		}
