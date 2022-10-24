@@ -38,6 +38,9 @@ struct Nothing {
 template <typename T>
 class Res {
 public:
+	Res() {
+		m_err = Err(0);
+	}
 	Res(Err e) {
 		m_err = e;
 	}

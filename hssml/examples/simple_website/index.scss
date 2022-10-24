@@ -6,12 +6,16 @@ head {
 		#main {
 			background: #321257;
 		}
+		p {
+			color: 	white;
+			background-color: #321257;
+		}
 	}
 }
 body {
 	background: black;
 
-	div#main {
+	div#main.a.bsdasdds.csd {
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -21,7 +25,7 @@ body {
 		border: 2px solid white;
 		border-radius: 20px;
 	
-		p {
+		p.lowp#precds.low.fx {
 			content: "Hello, World!";
 	
 			color: white;

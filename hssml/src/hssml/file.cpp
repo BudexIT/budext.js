@@ -38,7 +38,7 @@ ResNull stringWrite(const std::string& filename, const std::string& content) {
 		return ResNull(Err(2, "can't write everything to the file"));
 	}
 
-	return ResNull(Err(0));
+	return ResNull();
 }
 
 }
