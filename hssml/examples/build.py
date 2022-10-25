@@ -8,7 +8,6 @@ def buildFile(filein, fileout):
 	if len(naems) > 1:
 		os.makedirs(fileout[0 : -len(naems[-1])], exist_ok=True)
 	os.chdir("build/hssml")
-	os.system("hssml.exe " + filein + " " + fileout)
+	os.system(("hssml.exe " if os.name == 'nt' else "./hssml ") + "../../hssml/examples/"+filein + " ../examples/"+fileout)
 
-
-buildFile("hssml/examples/simple_website/index.scss", "build/examples/simple_website/index.html")
+buildFile("simple_website/index.scss", "simple_website/index.html")
