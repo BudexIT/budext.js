@@ -5,17 +5,17 @@
 
 #include <hssml/file.hpp>
 #include <hssml/str.hpp>
-#include <hssml/parser.hpp>
+#include <hssml/lexer.hpp>
 
 #include <hssml/innards/index.html.h>
 
-std::string findStyle(const std::vector<hssml::ParseInfo>& info) {
+std::string parseStyle(const std::vector<hssml::LexInfo>& info) {
 	std::string style = "";
 	bool styleStarted = false;
 	int toSkip = 0;
 	for(const auto& entry : info) {
 		if(styleStarted) {
-			if(entry.code == hssml::ParseCode::ContextClose) {
+			if(entry.code == hssml::LexCode::ContextClose) {
 				toSkip -= 1;
 
 				if(toSkip <= 0) {
@@ -27,21 +27,21 @@ std::string findStyle(const std::vector<hssml::ParseInfo>& info) {
 				style += entry.key;
 			}
 
-			if(entry.code == hssml::ParseCode::ContextOpen) {
+			if(entry.code == hssml::LexCode::ContextOpen) {
 				toSkip += 1;
 			}
 			else if(toSkip == 0) {
 				styleStarted = false;
 			}
 		}
-		else if(entry.code == hssml::ParseCode::Word && entry.key == "style") {
+		else if(entry.code == hssml::LexCode::Word && entry.key == "style") {
 			styleStarted = true;
 		}
 	}
 	return style;
 }
 
-std::string parseBody(std::string& style, const std::vector<hssml::ParseInfo>& info) {
+std::string parseBody(std::string& style, const std::vector<hssml::LexInfo>& info) {
 	std::string body = "";
 
 	bool bodyStarted = false;
@@ -55,11 +55,11 @@ std::string parseBody(std::string& style, const std::vector<hssml::ParseInfo>& i
 	// std::vector<std::string> styles;
 
 	for(size_t i = 0; i < info.size(); i++) {
-		const hssml::ParseInfo& entry = info[i];
+		const hssml::LexInfo& entry = info[i];
 		
 		// body detection
 		if(bodyStarted) {
-			if(entry.code == hssml::ParseCode::ContextClose) {
+			if(entry.code == hssml::LexCode::ContextClose) {
 				toSkip -= 1;
 				if(toSkip <= 0) {
 					break;
@@ -73,7 +73,7 @@ std::string parseBody(std::string& style, const std::vector<hssml::ParseInfo>& i
 				bool isProperTag = entry.code == hssml::Word && info[i+1].code == hssml::ContextOpen;
 				bool isProperTagClose = entry.code == hssml::ContextClose;
 				if(!(isProperStyle || isProperTag || isProperTagClose)) {
-					std::cout << "ERROR: Improper syntax." << std::endl;
+					std::cout << "ERROR: Improper syntax on line " << entry.line << ", column " << entry.column << std::endl;
 				}
 
 				if(entry.code == hssml::Word) {
@@ -113,24 +113,24 @@ std::string parseBody(std::string& style, const std::vector<hssml::ParseInfo>& i
 
 
 				// skip unneeded entries
-				if(entry.code == hssml::Word) {
+				if(isProperTag) {
 					toSkip += 1;
 					i+=1;
 				}
-				else if(entry.code == hssml::Stylus) {
+				else if(isProperStyle) {
 					i+=3;
 				}
 			}
 
 			// close and open detection lol 
-			if(entry.code == hssml::ParseCode::ContextOpen) {
+			if(entry.code == hssml::LexCode::ContextOpen) {
 				toSkip += 1;
 			}
 			else if(toSkip == 0) {
 				bodyStarted = false;
 			}
 		}
-		else if(entry.code == hssml::ParseCode::Word && entry.key == "body") {
+		else if(entry.code == hssml::LexCode::Word && entry.key == "body") {
 			bodyStarted = true;
 		}
 	}
@@ -156,33 +156,34 @@ int main(int argc, char **argv) {
 	std::string input = file.unwrap();
 
 	// Parse the input code 
-	hssml::Parser hssmlParser; 
+	hssml::Lexer hssmlLexer; 
 
-	hssmlParser.feed(input);
+	hssmlLexer.feed(input);
 	
-	auto parseRes = hssmlParser.parse();
+	auto parseRes = hssmlLexer.lex();
 	if(parseRes.error().code()) {
 		std::cout << parseRes.error().string() << std::endl;
 		return 1;
 	}
 
 	// Log parser's output
-	std::cout << "Parsed:\n";
-	for(const auto& entry : hssmlParser.getParsed()) {
-		std::cout << "-- " << hssml::parseCodeRep(entry.code) << ":\n" << entry.key << std::endl;
-	}
-	std::cout << "Finito" << std::endl;
+	// std::cout << "Parsed:\n";
+	// for(const auto& entry : hssmlLexer.getParsed()) {
+	// 	std::cout << "-- " << hssml::parseCodeRep(entry.code) << ":\n" << entry.key << std::endl;
+	// }
+	// std::cout << "Finito" << std::endl;
 
 	// find style stuff
-	std::string style = findStyle(hssmlParser.getParsed());
+	std::string style = parseStyle(hssmlLexer.getLexed());
 
 	// find body stuff idk
-	std::string body = parseBody(style, hssmlParser.getParsed());
+	std::string body = parseBody(style, hssmlLexer.getLexed());
 
 	// output it all lol
 	std::string output = hssml::str::replace(g_innard_index_html, "{style}", style);
 	output = hssml::str::replace(output, "{body}", body);
 
+	// write to the output file
 	auto res = hssml::file::stringWrite(filename_out, output);
 	if(res.error().code()) {
 		std::cout << res.error().string() << std::endl;

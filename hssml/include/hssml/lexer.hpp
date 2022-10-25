@@ -5,7 +5,7 @@
 
 namespace hssml {
 
-enum ParseCode {
+enum LexCode {
 	Word = 0,
 	ContextOpen = 1,
 	ContextClose = 2,
@@ -14,7 +14,7 @@ enum ParseCode {
 	Code = 5,
 	Stylus = 6
 };
-std::string parseCodeRep(unsigned int code) {
+std::string lexCodeRep(unsigned int code) {
 	switch(code) {
 		case Word: return "Word";
 		case ContextOpen: return "ContextOpen";
@@ -27,64 +27,75 @@ std::string parseCodeRep(unsigned int code) {
 	}
 }
 
-struct ParseInfo {
+struct LexInfo {
 	unsigned int code;
 	std::string key;
+	unsigned int line;
+	unsigned int column;
 };
 
-class Parser {
+class Lexer {
 public:
-	Parser() {
+	Lexer() {
 	}
-	~Parser() {
+	~Lexer() {
 	}
 
 	void feed(const std::string& input) {
 		m_input = input;
 	}
 
-	const std::vector<ParseInfo>& getParsed() {
-		return m_parsed;
+	const std::vector<LexInfo>& getLexed() {
+		return m_lexed;
 	}
 
-	ResNull parse() {
+	ResNull lex() {
 		if(m_input.size() < 1) {
-			return ResNull(Err(1, "string to parse not fed"));
+			return ResNull(Err(1, "string to lex not fed"));
 		}
 
 		std::string currentKey = "";
 
 		bool isKeyCode = false;
 		
+		unsigned int line = 1;
+		unsigned int column = 1;
+
 		auto pushKey = [&](bool isStylus = false) {
 			if(currentKey.size() > 0) {
 				if(!isKeyCode) {
 					if(isStylus) {
-						m_parsed.push_back(
-							ParseInfo{
-								ParseCode::Stylus,
-								currentKey
+						m_lexed.push_back(
+							LexInfo{
+								LexCode::Stylus,
+								currentKey,
+								line,
+								column
 							}
 						);
 					}
 					else {
-						m_parsed.push_back(
-							ParseInfo{
-								ParseCode::Word,
-								currentKey
+						m_lexed.push_back(
+							LexInfo{
+								LexCode::Word,
+								currentKey,
+								line,
+								column
 							}
 						);
 					}
 				}
 				else {
-					if(m_parsed[m_parsed.size()-1].code == ParseCode::Code) {
-						m_parsed[m_parsed.size()-1].key += " " + currentKey;
+					if(m_lexed[m_lexed.size()-1].code == LexCode::Code) {
+						m_lexed[m_lexed.size()-1].key += " " + currentKey;
 					}
 					else {
-						m_parsed.push_back(
-							ParseInfo{
-								ParseCode::Code,
-								currentKey
+						m_lexed.push_back(
+							LexInfo{
+								LexCode::Code,
+								currentKey,
+								line,
+								column
 							}
 						);
 					}
@@ -92,31 +103,38 @@ public:
 				currentKey = "";
 			}
 		};
-	
+
 		for(char curr : m_input) {
 			switch(curr) {
-				case ' ':
-				case '\t':
 				case '\n': {
+					line += 1;
+					column = 0;
+				}
+				case ' ':
+				case '\t': {
 					pushKey();
 					break;
 				}
 				case '{': {
 					pushKey();
-					m_parsed.push_back(
-						ParseInfo{
-							ParseCode::ContextOpen,
-							"{"
+					m_lexed.push_back(
+						LexInfo{
+							LexCode::ContextOpen,
+							"{",
+							line,
+							column
 						}
 					);
 					break;
 				}
 				case '}': {
 					pushKey();
-					m_parsed.push_back(
-						ParseInfo{
-							ParseCode::ContextClose,
-							"}"
+					m_lexed.push_back(
+						LexInfo{
+							LexCode::ContextClose,
+							"}",
+							line,
+							column
 						}
 					);
 					break;
@@ -124,10 +142,12 @@ public:
 				case ';': {
 					pushKey();
 					isKeyCode = false;
-					m_parsed.push_back(
-						ParseInfo{
-							ParseCode::Semicolon,
-							";"
+					m_lexed.push_back(
+						LexInfo{
+							LexCode::Semicolon,
+							";",
+							line,
+							column
 						}
 					);
 					break;
@@ -135,10 +155,12 @@ public:
 				case ':': {
 					pushKey(true);
 					isKeyCode = true;
-					m_parsed.push_back(
-						ParseInfo{
-							ParseCode::Colon,
-							":"
+					m_lexed.push_back(
+						LexInfo{
+							LexCode::Colon,
+							":",
+							line,
+							column
 						}
 					);
 					break;
@@ -148,6 +170,7 @@ public:
 					break;
 				}
 			}
+			column += 1;
 		}
 
 		return ResNull();
@@ -155,7 +178,7 @@ public:
 
 private:
 	std::string m_input;
-	std::vector<ParseInfo> m_parsed;
+	std::vector<LexInfo> m_lexed;
 
 };
 
