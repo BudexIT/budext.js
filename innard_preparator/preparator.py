@@ -5,6 +5,7 @@ print("-- [budext.js] [Innard Preparator] Running")
 print("-- [budext.js] [Innard Preparator] -- Input file: " + sys.argv[1])
 print("-- [budext.js] [Innard Preparator] -- Output header file: " + sys.argv[2])
 print("-- [budext.js] [Innard Preparator] -- Output source file: " + sys.argv[3])
+print("-- [budext.js] [Innard Preparator] -- Work dir: " + sys.argv[4])
 
 # Recursively creates a file with custom contents in it
 def makeFile(name, contents=""):
@@ -40,12 +41,17 @@ for line in input_file_lines:
 
 output_file += "\";"
 
-naems = sys.argv[1].split("/");
-varname = "g_innard_" + naems[-1].replace(".", "_");
+naems = sys.argv[1].split("/")
+varname = "g_innard_" + naems[-1].replace(".", "_")
 
-outnaems = sys.argv[2].split("/");
+outnaems = sys.argv[2]
+outnaems = outnaems[len(sys.argv[4]): len(outnaems)]
+
+cmpnames = sys.argv[3]
+cmpnames = cmpnames[len(sys.argv[4]): len(cmpnames)]
+cmpnames = cmpnames.split("/")
 
 makeFile(sys.argv[2], "#pragma once\nextern const char *" + varname + ";")
-makeFile(sys.argv[3], "#include <innards/" + outnaems[-1] + ">\nconst char *" + varname + " = " + output_file)
+makeFile(sys.argv[3], "#include \"" + "../"*(len(cmpnames)-1) + outnaems + "\"\nconst char *" + varname + " = " + output_file)
 
 print("-- [budext.js] [Innard Preparator] Operation Successful")
