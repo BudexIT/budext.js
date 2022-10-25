@@ -14,7 +14,7 @@ enum LexCode {
 	Code = 5,
 	Stylus = 6
 };
-std::string lexCodeRep(unsigned int code) {
+inline std::string lexCodeRep(unsigned int code) {
 	switch(code) {
 		case Word: return "Word";
 		case ContextOpen: return "ContextOpen";

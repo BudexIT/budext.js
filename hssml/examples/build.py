@@ -11,3 +11,5 @@ def buildFile(filein, fileout):
 	os.system(("hssml.exe " if os.name == 'nt' else "./hssml ") + "../../hssml/examples/"+filein + " ../examples/"+fileout)
 
 buildFile("simple_website/index.scss", "simple_website/index.html")
+
+print("-- [budext.js] [Example Build] Success")
