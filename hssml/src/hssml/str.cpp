@@ -3,7 +3,7 @@
 namespace hssml {
 namespace str {
 
-std::string replace(std::string input, std::string_view to_replace, std::string_view replace_with) {
+std::string replace(std::string input, const std::string& to_replace, const std::string& replace_with) {
 	size_t index = 0;
 	while(true) {
 		index = input.find(to_replace, index);
@@ -15,7 +15,7 @@ std::string replace(std::string input, std::string_view to_replace, std::string_
 	return input;
 }
 
-std::vector<std::string> split(const std::string& input, std::string_view where) {
+std::vector<std::string> split(const std::string& input, const std::string& where) {
 	std::vector<std::string> returned;
 
 	size_t index = 0;

@@ -25,3 +25,8 @@ file(GLOB_RECURSE srcs
 
 # create an executable app out of the sources
 add_executable(${project_name} ${srcs})
+
+# if compiled to a static application, link statically
+if(LIBTYPE STREQUAL "STATIC")
+	target_link_options(${project_name} PRIVATE -static)
+endif()

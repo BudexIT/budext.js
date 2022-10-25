@@ -18,7 +18,7 @@ public:
 
 	}
 
-	void feed(std::string_view input) {
+	void feed(const std::string& input) {
 		m_input = input;
 	}
 	void parsePair(std::regex key, unsigned int code) {
